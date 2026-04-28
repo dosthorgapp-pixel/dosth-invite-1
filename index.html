@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dosth App — Join Squad</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+    body {
+      background: #0A1F0A;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #0D3A1A;
+      border-radius: 24px;
+      border: 1px solid rgba(74,222,128,0.25);
+      padding: 36px 28px;
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: #071408;
+      border-radius: 20px;
+      border: 2px solid rgba(74,222,128,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 40px;
+    }
+    h1 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 28px; line-height: 1.5; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: #4ADE80;
+      color: #0A1F0A;
+      font-size: 16px;
+      font-weight: 800;
+      border-radius: 100px;
+      text-decoration: none;
+      margin-bottom: 12px;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { background: #22c55e; }
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .status {
+      font-size: 13px;
+      color: rgba(74,222,128,0.7);
+      margin-bottom: 20px;
+      min-height: 20px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(74,222,128,0.3);
+      border-top-color: #4ADE80;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .token-box {
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #4ADE80;
+      margin-bottom: 24px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🌿</div>
+    <h1>Dosth App</h1>
+    <p class="sub" id="subtitle">You've been invited to join a squad!</p>
+    <div class="token-box" id="token-display">Checking invite...</div>
+    <div class="status" id="status">
+      <span class="spinner"></span> Opening Dosth App...
+    </div>
+    <button class="btn" id="open-btn" onclick="openApp()">Open Dosth App</button>
+    <a class="btn-secondary" href="https://play.google.com/store/apps" id="install-btn" style="display:none">
+      Install Dosth App
+    </a>
+  </div>
+
+  <script>
+    // Extract token from URL path
+    // URL format: https://yourusername.github.io/dosth-invite/VSFMNQG6
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const token = pathParts[pathParts.length - 1];
+
+    const deepLink = token ? 'dostuapp://join/' + token : null;
+
+    document.getElementById('token-display').textContent =
+      token ? 'Token: ' + token : '⚠️ No token found in link';
+
+    function openApp() {
+      if (!deepLink) {
+        document.getElementById('status').textContent = '⚠️ Invalid invite link.';
+        return;
+      }
+      document.getElementById('status').innerHTML =
+        '<span class="spinner"></span> Opening Dosth App...';
+
+      // Try to open the app
+      window.location.href = deepLink;
+
+      // After 2.5s, if still on this page, show install button
+      setTimeout(() => {
+        document.getElementById('status').textContent =
+          'App not opening? Make sure Dosth App is installed.';
+        document.getElementById('install-btn').style.display = 'block';
+      }, 2500);
+    }
+
+    // Auto-trigger on load after short delay
+    if (token) {
+      setTimeout(openApp, 800);
+    } else {
+      document.getElementById('status').textContent = '⚠️ No invite token in this link.';
+    }
+  </script>
+</body>
+</html>
