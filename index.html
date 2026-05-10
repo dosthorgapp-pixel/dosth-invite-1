@@ -5,145 +5,263 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dosth App — Join Squad</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      background: #0A1F0A;
+      background-color: #071408;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
     }
+
     .card {
-      background: #0D3A1A;
+      background: #0D2010;
+      border: 1px solid rgba(74, 222, 128, 0.2);
       border-radius: 24px;
-      border: 1px solid rgba(74,222,128,0.25);
-      padding: 36px 28px;
-      text-align: center;
-      max-width: 380px;
+      padding: 40px 32px;
+      max-width: 420px;
       width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
     }
+
     .logo {
       width: 80px;
       height: 80px;
-      background: #071408;
-      border-radius: 20px;
-      border: 2px solid rgba(74,222,128,0.4);
+      border-radius: 22px;
+      margin: 0 auto 20px;
+      background: #0A1F0A;
+      border: 1.5px solid rgba(74,222,128,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 40px;
+      font-size: 36px;
     }
-    h1 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-    .sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 28px; line-height: 1.5; }
+
+    h1 {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.55);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .token-box {
+      background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.25);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+
+    .token-label {
+      color: rgba(74,222,128,0.6);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .token-value {
+      color: #4ADE80;
+      font-size: 18px;
+      font-weight: 800;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+    }
+
     .btn {
       display: block;
       width: 100%;
-      padding: 16px;
-      background: #4ADE80;
-      color: #0A1F0A;
-      font-size: 16px;
-      font-weight: 800;
+      padding: 15px;
       border-radius: 100px;
-      text-decoration: none;
-      margin-bottom: 12px;
+      font-size: 15px;
+      font-weight: 700;
       cursor: pointer;
-      border: none;
-    }
-    .btn:hover { background: #22c55e; }
-    .btn-secondary {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background: transparent;
-      color: rgba(255,255,255,0.4);
-      font-size: 14px;
-      border-radius: 100px;
       text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: none;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-bottom: 10px;
     }
-    .status {
-      font-size: 13px;
-      color: rgba(74,222,128,0.7);
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: #4ADE80;
+      color: #071408;
+    }
+
+    /* Web join button — shown based on device detection */
+    .btn-web {
+      background: #0F2044;
+      color: #93C5FD;
+      border: 1.5px solid #1E40AF;
+    }
+
+    .btn-install {
+      background: transparent;
+      color: rgba(255,255,255,0.45);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+    .divider-text {
+      color: rgba(255,255,255,0.25);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .hint {
+      color: rgba(255,255,255,0.3);
+      font-size: 12px;
       margin-bottom: 20px;
-      min-height: 20px;
+      line-height: 1.5;
     }
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(74,222,128,0.3);
-      border-top-color: #4ADE80;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .token-box {
-      background: rgba(0,0,0,0.3);
-      border-radius: 10px;
+
+    /* Desktop banner — only shown on non-touch devices */
+    .desktop-banner {
+      display: none;
+      background: rgba(30, 64, 175, 0.15);
+      border: 1px solid rgba(147, 197, 253, 0.2);
+      border-radius: 12px;
       padding: 10px 14px;
-      font-family: monospace;
-      font-size: 13px;
-      color: #4ADE80;
-      margin-bottom: 24px;
-      word-break: break-all;
+      margin-bottom: 20px;
+    }
+    .desktop-banner p {
+      color: #93C5FD;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: rgba(255,255,255,0.2);
+      font-size: 11px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">🌿</div>
-    <h1>Dosth App</h1>
-    <p class="sub" id="subtitle">You've been invited to join a squad!</p>
-    <div class="token-box" id="token-display">Checking invite...</div>
-    <div class="status" id="status">
-      <span class="spinner"></span> Opening Dosth App...
-    </div>
-    <button class="btn" id="open-btn" onclick="openApp()">Open Dosth App</button>
-    <a class="btn-secondary" href="https://play.google.com/store/apps" id="install-btn" style="display:none">
-      Install Dosth App
-    </a>
+
+<div class="card">
+
+  <div class="logo">🌿</div>
+
+  <h1>Dosth App</h1>
+  <p class="subtitle">You've been invited to join a squad!</p>
+
+  <!-- Token display -->
+  <div class="token-box">
+    <div class="token-label">Invite Token</div>
+    <div class="token-value" id="tokenDisplay">—</div>
   </div>
 
-  <script>
-    // Extract token from URL path
-    // URL format: https://yourusername.github.io/dosth-invite/VSFMNQG6
-    const pathParts = window.location.pathname.split('/').filter(Boolean);
-    const token = pathParts[pathParts.length - 1];
+  <!-- Desktop browser banner (shown via JS if no touch) -->
+  <div class="desktop-banner" id="desktopBanner">
+    <p>💻 On a laptop or desktop? Use <strong style="color:#60A5FA">Join on Web</strong> below — no app install needed.</p>
+  </div>
 
-    const deepLink = token ? 'dostuapp://join/' + token : null;
+  <!-- Open in native app -->
+  <a class="btn btn-primary" id="btnOpenApp" href="#">
+    📱 Open Dosth App
+  </a>
 
-    document.getElementById('token-display').textContent =
-      token ? 'Token: ' + token : '⚠️ No token found in link';
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">OR</div>
+    <div class="divider-line"></div>
+  </div>
 
-    function openApp() {
-      if (!deepLink) {
-        document.getElementById('status').textContent = '⚠️ Invalid invite link.';
-        return;
-      }
-      document.getElementById('status').innerHTML =
-        '<span class="spinner"></span> Opening Dosth App...';
+  <!-- Join on web — direct to dostu-planner.web.app -->
+  <a class="btn btn-web" id="btnJoinWeb" href="#">
+    🌐 Join on Web
+  </a>
 
-      // Try to open the app
-      window.location.href = deepLink;
+  <!-- Install hint -->
+  <p class="hint" id="installHint">App not opening? Make sure Dosth App is installed.</p>
 
-      // After 2.5s, if still on this page, show install button
+  <!-- Install button -->
+  <a class="btn btn-install" id="btnInstall" href="#">
+    Install Dosth App
+  </a>
+
+  <div class="footer">Dosth App &nbsp;·&nbsp; Squad management made simple 🌿</div>
+</div>
+
+<script>
+  // ── Extract token from URL path ──────────────────────────────
+  // URL format: /dosth-invite/RAQ7VBX3
+  const pathParts = window.location.pathname.split('/');
+  const token = pathParts[pathParts.length - 1] || '';
+
+  // ── Populate token display ───────────────────────────────────
+  document.getElementById('tokenDisplay').textContent = token || 'INVALID';
+
+  // ── Build URLs ───────────────────────────────────────────────
+  const nativeUrl  = 'dostuapp://join/' + token;
+  const webAppUrl  = 'https://dostu-planner.web.app/dosth-invite/' + token;
+  const playStore  = 'https://play.google.com/store/apps/details?id=com.dosthapp'; // update with real package
+  const appStore   = 'https://apps.apple.com/app/dosth/id0000000000';              // update with real ID
+
+  document.getElementById('btnOpenApp').href  = nativeUrl;
+  document.getElementById('btnJoinWeb').href  = webAppUrl;
+
+  // ── Detect device for install link ──────────────────────────
+  const ua = navigator.userAgent.toLowerCase();
+  const isIOS     = /iphone|ipad|ipod/.test(ua);
+  const isAndroid = /android/.test(ua);
+  const isMobile  = isIOS || isAndroid;
+  const isDesktop = !isMobile && !('ontouchstart' in window);
+
+  document.getElementById('btnInstall').href = isIOS ? appStore : playStore;
+
+  // ── Desktop: show banner, reorder buttons, hide install hint ─
+  if (isDesktop) {
+    document.getElementById('desktopBanner').style.display = 'block';
+    document.getElementById('installHint').style.display   = 'none';
+    document.getElementById('btnInstall').style.display    = 'none';
+    // Make "Open Dosth App" look secondary on desktop (app not installed)
+    document.getElementById('btnOpenApp').style.background    = 'transparent';
+    document.getElementById('btnOpenApp').style.color         = 'rgba(255,255,255,0.45)';
+    document.getElementById('btnOpenApp').style.border        = '1px solid rgba(255,255,255,0.15)';
+    // Make "Join on Web" look primary on desktop
+    document.getElementById('btnJoinWeb').style.background = '#4ADE80';
+    document.getElementById('btnJoinWeb').style.color      = '#071408';
+    document.getElementById('btnJoinWeb').style.border     = 'none';
+  }
+
+  // ── On mobile: try native app first, offer web as fallback ───
+  if (isMobile) {
+    document.getElementById('btnOpenApp').addEventListener('click', function(e) {
+      // After 2.5s, if still on page, the app isn't installed — show install button hint
       setTimeout(() => {
-        document.getElementById('status').textContent =
-          'App not opening? Make sure Dosth App is installed.';
-        document.getElementById('install-btn').style.display = 'block';
+        document.getElementById('installHint').style.color = '#4ADE80';
+        document.getElementById('installHint').textContent =
+          "App didn't open? Tap Install below or use Join on Web ↑";
       }, 2500);
-    }
+    });
+  }
+</script>
 
-    // Auto-trigger on load after short delay
-    if (token) {
-      setTimeout(openApp, 800);
-    } else {
-      document.getElementById('status').textContent = '⚠️ No invite token in this link.';
-    }
-  </script>
 </body>
 </html>
